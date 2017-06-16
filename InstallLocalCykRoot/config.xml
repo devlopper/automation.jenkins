@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Install artifact in repository</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>3</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.joelj.jenkins.eztemplates.TemplateImplementationProperty plugin="ez-templates@1.2.5">
+      <templateJobName>Install</templateJobName>
+      <syncMatrixAxis>true</syncMatrixAxis>
+      <syncDescription>false</syncDescription>
+      <syncBuildTriggers>true</syncBuildTriggers>
+      <syncDisabled>false</syncDisabled>
+      <syncSecurity>true</syncSecurity>
+      <syncScm>true</syncScm>
+      <syncOwnership>true</syncOwnership>
+      <syncAssignedLabel>true</syncAssignedLabel>
+      <exclusions>
+        <string>ez-templates</string>
+        <string>job-params</string>
+        <string>disabled</string>
+        <string>description</string>
+      </exclusions>
+    </com.joelj.jenkins.eztemplates.TemplateImplementationProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions class="linked-list">
+        <hudson.model.StringParameterDefinition>
+          <name>pom_folder</name>
+          <description>The source code folder containing the pom.xml file</description>
+          <defaultValue>org\cyk\system\root\root-_pom</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>pom_folder_is_relative_to_source_code_local_repository_folder</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>test_skipped</name>
+          <description>Skip the tests</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>artifact_repository_folder</name>
+          <description>artifact repository folder</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>@echo on&#xd;
+if &quot;%POM_FOLDER_IS_RELATIVE_TO_SOURCE_CODE_LOCAL_REPOSITORY_FOLDER%&quot;==&quot;true&quot; (set POM_FOLDER=%SOURCE_CODE_LOCAL_REPOSITORY_FOLDER%%POM_FOLDER%)&#xd;
+if &quot;%ARTIFACT_REPOSITORY_FOLDER%&quot;==&quot;&quot; (set ARTIFACT_REPOSITORY_FOLDER=%ARTIFACT_LOCAL_REPOSITORY_FOLDER_DEVELOPMENT%)&#xd;
+@echo on&#xd;
+mvn clean install -Dmaven.test.skip=%TEST_SKIPPED% -Dmaven.repo.local=&quot;%ARTIFACT_REPOSITORY_FOLDER%&quot; -f &quot;%POM_FOLDER%/pom.xml&quot;</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

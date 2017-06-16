@@ -1,0 +1,41 @@
+# git ls-files --others --exclude-from=.git/info/exclude
+# Lines that start with '#' are comments.
+# For a project mostly in C, the following would be a good set of
+# exclude patterns (uncomment them if you want to use them):
+# *.[oa]
+# *~
+
+#Proposed by 
+builds/
+lastStableBuild
+lastStableBuild/
+lastStable
+lastStable/
+lastFailedBuild
+lastFailedBuild/
+lastSuccessfulBuild
+lastSuccessfulBuild/
+lastSuccessful
+lastSuccessful/
+lastUnsuccessfulBuild
+lastUnsuccessfulBuild/
+lastUnstableBuild
+lastUnstableBuild/
+nextBuildNumber
+nextBuildNumber/
+modules/
+*.log
+*.lnk
+*.project
+ 
+#Using patterns. character ! is used to defined pattern
+# Ignore everything
+#*
+
+# But not these files...
+#!.gitignore
+#!config.xml
+#*.xml
+#!*/config.xml
+# ...even if they are in subdirectories
+#!*/

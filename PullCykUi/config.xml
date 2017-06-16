@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Pull source code</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>3</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.joelj.jenkins.eztemplates.TemplateImplementationProperty plugin="ez-templates@1.2.5">
+      <templateJobName>Pull</templateJobName>
+      <syncMatrixAxis>true</syncMatrixAxis>
+      <syncDescription>false</syncDescription>
+      <syncBuildTriggers>true</syncBuildTriggers>
+      <syncDisabled>false</syncDisabled>
+      <syncSecurity>true</syncSecurity>
+      <syncScm>true</syncScm>
+      <syncOwnership>true</syncOwnership>
+      <syncAssignedLabel>true</syncAssignedLabel>
+      <exclusions>
+        <string>ez-templates</string>
+        <string>job-params</string>
+        <string>disabled</string>
+        <string>description</string>
+      </exclusions>
+    </com.joelj.jenkins.eztemplates.TemplateImplementationProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions class="linked-list">
+        <hudson.model.StringParameterDefinition>
+          <name>source_code_repository_folder_relative</name>
+          <description>The source code repository relative folder</description>
+          <defaultValue>org\cyk\ui</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>http_proxy</name>
+          <description>The http proxy</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>@echo off&#xd;
+if &quot;%PROXY%&quot;==&quot;&quot; (git config --global --unset http.proxy %HTTP_PROXY%) else (git config --global http.proxy %HTTP_PROXY%)&#xd;
+@echo on&#xd;
+git --git-dir=&quot;%SOURCE_CODE_LOCAL_REPOSITORY_FOLDER%%SOURCE_CODE_REPOSITORY_FOLDER_RELATIVE%\.git&quot; pull</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
