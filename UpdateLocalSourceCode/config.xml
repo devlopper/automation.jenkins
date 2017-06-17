@@ -6,11 +6,16 @@
   <properties>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>artifact_repository_folder</name>
-          <description></description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>type</name>
+          <description>type of pull. example : development,deployment,...</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>development</string>
+              <string>deployment</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
           <description>The http proxy</description>

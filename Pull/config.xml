@@ -6,10 +6,25 @@
   <properties>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>type</name>
+          <description>type of pull. example : development,deployment,...</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>development</string>
+              <string>deployment</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>source_code_repository_folder_relative</name>
           <description>The source code repository relative folder</description>
           <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>branch</name>
+          <description>The source code branch</description>
+          <defaultValue>master</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>http_proxy</name>
@@ -36,12 +51,15 @@
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <hudson.tasks.BatchFile>
-      <command>@echo off&#xd;
-if &quot;%PROXY%&quot;==&quot;&quot; (git config --global --unset http.proxy %HTTP_PROXY%) else (git config --global http.proxy %HTTP_PROXY%)&#xd;
-@echo on&#xd;
-git --git-dir=&quot;%SOURCE_CODE_LOCAL_REPOSITORY_FOLDER%%SOURCE_CODE_REPOSITORY_FOLDER_RELATIVE%\.git&quot; pull</command>
-    </hudson.tasks.BatchFile>
+    <hudson.tasks.Shell>
+      <command>case $type in
+   &quot;development&quot;) source_code_repository=&quot;$source_code_local_repository_folder_development&quot;;;
+   &quot;deployment&quot;) source_code_repository=&quot;$source_code_local_repository_folder_deployment&quot;;;
+esac
+
+echo Source code repository : $source_code_repository
+git --git-dir=&quot;$source_code_repository$source_code_repository_folder_relative\.git&quot; pull origin $branch</command>
+    </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers/>

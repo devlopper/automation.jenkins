@@ -31,26 +31,24 @@
     </com.joelj.jenkins.eztemplates.TemplateImplementationProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions class="linked-list">
+        <hudson.model.ChoiceParameterDefinition>
+          <name>type</name>
+          <description>type of pull. example : development,deployment,...</description>
+          <choices>
+            <string>development</string>
+            <string>deployment</string>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>pom_folder</name>
           <description>The source code folder containing the pom.xml file</description>
           <defaultValue>org\cyk\ui\ui-_pom</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
-          <name>pom_folder_is_relative_to_source_code_local_repository_folder</name>
-          <description></description>
-          <defaultValue>true</defaultValue>
-        </hudson.model.BooleanParameterDefinition>
-        <hudson.model.BooleanParameterDefinition>
           <name>test_skipped</name>
           <description>Skip the tests</description>
           <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>artifact_repository_folder</name>
-          <description>artifact repository folder</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -62,13 +60,20 @@
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <hudson.tasks.BatchFile>
-      <command>@echo on&#xd;
-if &quot;%POM_FOLDER_IS_RELATIVE_TO_SOURCE_CODE_LOCAL_REPOSITORY_FOLDER%&quot;==&quot;true&quot; (set POM_FOLDER=%SOURCE_CODE_LOCAL_REPOSITORY_FOLDER%%POM_FOLDER%)&#xd;
-if &quot;%ARTIFACT_REPOSITORY_FOLDER%&quot;==&quot;&quot; (set ARTIFACT_REPOSITORY_FOLDER=%ARTIFACT_LOCAL_REPOSITORY_FOLDER_DEVELOPMENT%)&#xd;
-@echo on&#xd;
-mvn clean install -Dmaven.test.skip=%TEST_SKIPPED% -Dmaven.repo.local=&quot;%ARTIFACT_REPOSITORY_FOLDER%&quot; -f &quot;%POM_FOLDER%/pom.xml&quot;</command>
-    </hudson.tasks.BatchFile>
+    <hudson.tasks.Shell>
+      <command>case $type in
+   &quot;development&quot;) artifact_repository=&quot;$artifact_local_repository_folder_development&quot;;;
+   &quot;deployment&quot;) artifact_repository=&quot;$artifact_local_repository_folder_deployment&quot;;;
+esac
+
+case $type in
+   &quot;development&quot;) pom_folder=&quot;$source_code_local_repository_folder_development$pom_folder/pom.xml&quot;;;
+   &quot;deployment&quot;) pom_folder=&quot;$source_code_local_repository_folder_deployment$pom_folder/pom.xml&quot;;;
+esac
+
+
+mvn clean install -Dmaven.test.skip=$test_skipped -Dmaven.repo.local=&quot;$artifact_repository&quot; -f &quot;$pom_folder&quot;</command>
+    </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers/>
