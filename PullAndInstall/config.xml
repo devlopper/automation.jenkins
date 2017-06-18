@@ -147,7 +147,7 @@
       <phaseName>Install CYK Utility</phaseName>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
-          <jobName>InstallLocalCykUtility</jobName>
+          <jobName>InstallCykUtility</jobName>
           <currParams>true</currParams>
           <exposedSCM>false</exposedSCM>
           <disableJob>false</disableJob>
@@ -170,7 +170,7 @@
       <phaseName>Install CYK Root</phaseName>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
-          <jobName>InstallLocalCykRoot</jobName>
+          <jobName>InstallCykRoot</jobName>
           <currParams>true</currParams>
           <exposedSCM>false</exposedSCM>
           <disableJob>false</disableJob>
@@ -193,7 +193,7 @@
       <phaseName>Install CYK UI</phaseName>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
-          <jobName>InstallLocalCykUi</jobName>
+          <jobName>InstallCykUi</jobName>
           <currParams>true</currParams>
           <exposedSCM>false</exposedSCM>
           <disableJob>false</disableJob>
@@ -216,7 +216,7 @@
       <phaseName>Install CYK Company</phaseName>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
-          <jobName>InstallLocalCykCompany</jobName>
+          <jobName>InstallCykCompany</jobName>
           <currParams>true</currParams>
           <exposedSCM>false</exposedSCM>
           <disableJob>false</disableJob>
@@ -239,7 +239,7 @@
       <phaseName>Install CYK School</phaseName>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
-          <jobName>InstallLocalCykSchool</jobName>
+          <jobName>InstallCykSchool</jobName>
           <currParams>true</currParams>
           <exposedSCM>false</exposedSCM>
           <disableJob>false</disableJob>
@@ -262,7 +262,7 @@
       <phaseName>Install CYK IESA School</phaseName>
       <phaseJobs>
         <com.tikal.jenkins.plugins.multijob.PhaseJobsConfig>
-          <jobName>InstallLocalCykIesaSchool</jobName>
+          <jobName>InstallCykIesaSchool</jobName>
           <currParams>true</currParams>
           <exposedSCM>false</exposedSCM>
           <disableJob>false</disableJob>
