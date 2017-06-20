@@ -39,7 +39,6 @@
           <editable>false</editable>
           <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
             <name>http_proxies</name>
-            <defaultChoice>none</defaultChoice>
           </choiceListProvider>
         </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
       </parameterDefinitions>
@@ -52,7 +51,7 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-    <com.joelj.jenkins.eztemplates.TemplateProperty plugin="ez-templates@1.2.5"/>
+    <com.joelj.jenkins.eztemplates.TemplateProperty plugin="ez-templates@1.2.6"/>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
   <canRoam>true</canRoam>
@@ -66,13 +65,16 @@
       <command>case $project_stage in
    &quot;default&quot;) project_stage=&quot;$project_stage_default&quot;;;
 esac
+case $source_code_repository_folder_relative in
+   &quot;default&quot;) source_code_repository_folder_relative=&quot;$source_code_repository_folder_relative_default&quot;;;
+esac
 case $source_code_repository_branch in
    &quot;default&quot;) source_code_repository_branch=&quot;$source_code_repository_branch_default&quot;;;
 esac
 
 case $project_stage in
    &quot;development&quot;) source_code_repository=&quot;$source_code_local_repository_folder_development&quot;;;
-   &quot;production&quot;) source_code_repository=&quot;$source_code_local_repository_folder_deployment&quot;;;
+   &quot;production&quot;) source_code_repository=&quot;$source_code_local_repository_folder_production&quot;;;
 esac
 git_dir=&quot;$source_code_repository$source_code_repository_folder_relative\.git&quot;
 
