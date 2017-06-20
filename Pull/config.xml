@@ -76,7 +76,7 @@ case $project_stage in
    &quot;development&quot;) source_code_repository=&quot;$source_code_local_repository_folder_development&quot;;;
    &quot;production&quot;) source_code_repository=&quot;$source_code_local_repository_folder_production&quot;;;
 esac
-git_dir=&quot;$source_code_repository$source_code_repository_folder_relative\.git&quot;
+git_dir=&quot;$source_code_repository$source_code_repository_folder_relative/.git&quot;
 
 git --git-dir=&quot;$git_dir&quot; pull origin $source_code_repository_branch</command>
     </hudson.tasks.Shell>
