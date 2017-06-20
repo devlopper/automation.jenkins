@@ -6,21 +6,24 @@
   <properties>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
-        <hudson.model.ChoiceParameterDefinition>
-          <name>type</name>
-          <description>type of pull. example : development,deployment,...</description>
-          <choices class="java.util.Arrays$ArrayList">
-            <a class="string-array">
-              <string>development</string>
-              <string>deployment</string>
-            </a>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.StringParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
+          <name>project_stage</name>
+          <description></description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>project_stage</name>
+            <defaultChoice>default</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
           <name>http_proxy</name>
-          <description>The http proxy</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
+          <description></description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>http_proxies</name>
+            <defaultChoice>default</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
     <jenkins.model.BuildDiscarderProperty>

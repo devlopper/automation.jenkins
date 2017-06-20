@@ -31,24 +31,33 @@
     </com.joelj.jenkins.eztemplates.TemplateImplementationProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions class="linked-list">
-        <hudson.model.ChoiceParameterDefinition>
-          <name>type</name>
-          <description>type of pull. example : development,deployment,...</description>
-          <choices>
-            <string>development</string>
-            <string>deployment</string>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>pom_folder</name>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
+          <name>project_stage</name>
+          <description>The project stage</description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>project_stage</name>
+            <defaultChoice>default</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
+          <name>source_code_pom_folder_relative</name>
           <description>The source code folder containing the pom.xml file</description>
-          <defaultValue>org\cyk\system\iesaschool\iesaschool-_pom</defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.BooleanParameterDefinition>
-          <name>test_skipped</name>
-          <description>Skip the tests</description>
-          <defaultValue>true</defaultValue>
-        </hudson.model.BooleanParameterDefinition>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>source_code_pom_folders_relative</name>
+            <defaultChoice>org/cyk/system/iesaschool/iesaschool-_pom</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
+          <name>system_test_type</name>
+          <description>system test type</description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>system_test_types</name>
+            <defaultChoice>none</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -61,16 +70,26 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>case $type in
+      <command>case $project_stage in
+   &quot;default&quot;) project_stage=&quot;$project_stage_default&quot;;;
+esac
+
+case $project_stage in
    &quot;development&quot;) artifact_repository=&quot;$artifact_local_repository_folder_development&quot;;;
-   &quot;deployment&quot;) artifact_repository=&quot;$artifact_local_repository_folder_deployment&quot;;;
+   &quot;production&quot;) artifact_repository=&quot;$artifact_local_repository_folder_deployment&quot;;;
 esac
 
-case $type in
-   &quot;development&quot;) pom_folder=&quot;$source_code_local_repository_folder_development$pom_folder/pom.xml&quot;;;
-   &quot;deployment&quot;) pom_folder=&quot;$source_code_local_repository_folder_deployment$pom_folder/pom.xml&quot;;;
+pom_dot_xml=&quot;/pom.xml&quot;
+
+case $project_stage in
+   &quot;development&quot;) pom_folder=&quot;$source_code_local_repository_folder_development$source_code_pom_folder_relative$pom_dot_xml&quot;;;
+   &quot;production&quot;) pom_folder=&quot;$source_code_local_repository_folder_deployment$source_code_pom_folder_relative$pom_dot_xml&quot;;;
 esac
 
+case $system_test_type in
+   &quot;none&quot;) test_skipped=&quot;true&quot;;;
+   *) test_skipped=&quot;false&quot;;;
+esac
 
 mvn clean install -Dmaven.test.skip=$test_skipped -Dmaven.repo.local=&quot;$artifact_repository&quot; -f &quot;$pom_folder&quot;</command>
     </hudson.tasks.Shell>

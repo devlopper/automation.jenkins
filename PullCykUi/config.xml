@@ -31,29 +31,41 @@
     </com.joelj.jenkins.eztemplates.TemplateImplementationProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions class="linked-list">
-        <hudson.model.ChoiceParameterDefinition>
-          <name>type</name>
-          <description>type of pull. example : development,deployment,...</description>
-          <choices>
-            <string>development</string>
-            <string>deployment</string>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.StringParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
+          <name>project_stage</name>
+          <description>The project statge</description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>project_stage</name>
+            <defaultChoice>default</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
           <name>source_code_repository_folder_relative</name>
-          <description>The source code repository relative folder</description>
-          <defaultValue>org\cyk\ui</defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>branch</name>
-          <description>The source code branch</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
+          <description>The source code repository</description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>source_code_repository_folders_relative</name>
+            <defaultChoice>org/cyk/ui</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
+          <name>source_code_repository_branch</name>
+          <description>The source code repositoty branch</description>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>source_code_repository_branches</name>
+            <defaultChoice>default</defaultChoice>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
+        <jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition plugin="extensible-choice-parameter@1.4.0">
           <name>http_proxy</name>
           <description>The http proxy</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
+          <editable>false</editable>
+          <choiceListProvider class="jp.ikedam.jenkins.plugins.extensible_choice_parameter.GlobalTextareaChoiceListProvider">
+            <name>http_proxies</name>
+          </choiceListProvider>
+        </jp.ikedam.jenkins.plugins.extensible__choice__parameter.ExtensibleChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -66,13 +78,20 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>case $type in
-   &quot;development&quot;) source_code_repository=&quot;$source_code_local_repository_folder_development&quot;;;
-   &quot;deployment&quot;) source_code_repository=&quot;$source_code_local_repository_folder_deployment&quot;;;
+      <command>case $project_stage in
+   &quot;default&quot;) project_stage=&quot;$project_stage_default&quot;;;
+esac
+case $source_code_repository_branch in
+   &quot;default&quot;) source_code_repository_branch=&quot;$source_code_repository_branch_default&quot;;;
 esac
 
-echo Source code repository : $source_code_repository
-git --git-dir=&quot;$source_code_repository$source_code_repository_folder_relative\.git&quot; pull origin $branch</command>
+case $project_stage in
+   &quot;development&quot;) source_code_repository=&quot;$source_code_local_repository_folder_development&quot;;;
+   &quot;production&quot;) source_code_repository=&quot;$source_code_local_repository_folder_deployment&quot;;;
+esac
+git_dir=&quot;$source_code_repository$source_code_repository_folder_relative\.git&quot;
+
+git --git-dir=&quot;$git_dir&quot; pull origin $source_code_repository_branch</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
